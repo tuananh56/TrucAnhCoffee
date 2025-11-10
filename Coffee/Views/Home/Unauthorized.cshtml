@@ -1,0 +1,14 @@
+﻿
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<h2>Truy cập bị từ chối</h2>
+<p>Bạn không có quyền truy cập vào trang này. Vui lòng đăng nhập với tài khoản có quyền Admin.</p>
+
+<p style="font-weight: bold; color: red; font-size: 20px;">Cút mày, đéo phải Admin! 🚫</p>
+<img src="https://media.tenor.com/5mghHzR3bSIAAAAM/troll-face.gif" alt="Troll Face" width="200">
+<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Quay lại trang chủ</a>

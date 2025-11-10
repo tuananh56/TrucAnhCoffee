@@ -1,0 +1,75 @@
+﻿@model List<Coffee.Models.Order>
+
+<h2 class="text-center my-4 text-coffee fw-bold">📦 Danh sách đơn hàng</h2>
+
+<div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-coffee text-white text-center">
+            <tr>
+                <th>#</th>
+                <th>Khách hàng</th>
+                <th>Sản phẩm</th>
+                <th class="text-end">Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td class="text-center fw-bold">@order.OrderID</td>
+                    <td>@order.User.FullName</td>
+                    <td>
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var item in order.OrderDetails)
+                            {
+                                <li>🛒 <strong>@item.Product.Name</strong> (x @item.Quantity)</li>
+                            }
+                        </ul>
+                    </td>
+                    <td class="text-end text-primary fw-bold">@order.TotalAmount.ToString("N0") VNĐ</td>
+                    <td class="text-center">
+                        <span class="badge
+                            @(order.Status == "Chờ xác nhận" ? "bg-warning text-dark" :
+                              order.Status == "Đang giao" ? "bg-primary" :
+                              order.Status == "Đã giao" ? "bg-success" :
+                              order.Status == "Giao hàng thất bại" ? "bg-danger" : "bg-secondary")">
+                            @order.Status
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <a href="@Url.Action("XemHoaDon", "Order", new { orderId = order.OrderID })"
+                           class="btn btn-info btn-sm rounded-pill px-3 py-1">
+                            📜 Xem hóa đơn
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .text-coffee { color: #6b4226; }
+    .table-coffee { background-color: #6b4226; }
+    .btn-info {
+        background-color: #4d9aff;
+        border: none;
+        transition: all 0.3s;
+    }
+    .btn-info:hover {
+        background-color: #2978ff;
+        color: #fff;
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(107,66,38,0.1);
+        transform: scale(1.01);
+        transition: all 0.2s ease-in-out;
+    }
+    .table-responsive { overflow-x: auto; }
+    @@media (max-width: 576px) {
+        table.table th, table.table td { font-size: 14px; }
+        .btn-sm { font-size: 12px; padding: 3px 8px; }
+    }
+</style>

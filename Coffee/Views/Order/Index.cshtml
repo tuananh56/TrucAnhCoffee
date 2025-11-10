@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Coffee.Models.Order>
+
+@{
+    ViewBag.Title = "Quản lý Đơn Hàng";
+}
+
+<h2 class="mb-3">Danh sách đơn hàng</h2>
+
+<!-- Form tìm kiếm & lọc trạng thái -->
+<form method="get" action="@Url.Action("Index")" class="mb-3 d-flex gap-2">
+    <input type="text" name="search" value="@ViewBag.Search" placeholder="🔍 Tìm theo mã đơn, tên KH, SĐT"
+           class="form-control w-25" />
+
+    <select name="status" class="form-select w-25">
+        <option value="">-- Chọn trạng thái --</option>
+        <option value="Chua giao" @(ViewBag.Status == "Chua giao" ? "selected" : "")>Chưa giao</option>
+        <option value="Dang giao" @(ViewBag.Status == "Dang giao" ? "selected" : "")>Đang giao</option>
+        <option value="Da giao" @(ViewBag.Status == "Da giao" ? "selected" : "")>Đã giao</option>
+        <option value="Giao hang that bai" @(ViewBag.Status == "Giao hang that bai" ? "selected" : "")>Giao hàng thất bại</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary">🔍 Tìm kiếm</button>
+</form>
+
+<!-- Form xóa hàng loạt -->
+<form method="post" action="@Url.Action("DeleteSelected", "Order")" onsubmit="return confirm('Bạn có chắc muốn xóa các đơn hàng đã chọn?');">
+
+
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th class="text-center">
+                    <input type="checkbox" id="select-all" />
+                </th>
+                <th class="text-center">Mã Đơn</th>
+                <th>Khách Hàng</th>
+                <th class="text-center">Ngày Đặt</th>
+                <th class="text-end">Tổng Tiền</th>
+                <th class="text-center">Trạng Thái</th>
+                <th class="text-center">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" name="selectedIds" value="@order.OrderID" />
+                    </td>
+                    <td class="text-center">@order.OrderID</td>
+                    <td>@order.User.FullName (@order.User.Phone)</td>
+                    <td class="text-center">@(order.OrderDate?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")</td>
+                    <td class="text-end">@order.TotalAmount.ToString("N0") VNĐ</td>
+                    <td class="text-center">
+                        <span class="badge @GetStatusColor(order.Status)">@order.Status</span>
+                    </td>
+                    <td class="text-center">
+                        <a href="@Url.Action("Details", new { id = order.OrderID })" class="btn btn-sm btn-info">👁 Xem</a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-end align-items-center mb-2">
+
+        <button type="submit" class="btn btn-danger">🗑 Xóa </button>
+    </div>
+
+</form>
+
+<!-- Script check all -->
+<script>
+    document.getElementById('select-all').addEventListener('change', function () {
+        const checkboxes = document.querySelectorAll('input[name="selectedIds"]');
+        for (const checkbox of checkboxes) {
+            checkbox.checked = this.checked;
+        }
+    });
+</script>
+
+@functions {
+    public string GetStatusColor(string status)
+    {
+        switch (status)
+        {
+            case "Chua giao":
+                return "bg-secondary text-white"; // Xám
+            case "Dang giao":
+                return "bg-warning text-dark"; // Vàng
+            case "Da giao":
+                return "bg-success text-white"; // Xanh lá
+            case "Giao hang that bai":
+                return "bg-danger text-white"; // Đỏ
+            default:
+                return "bg-secondary text-white"; // Mặc định Xám
+        }
+    }
+}

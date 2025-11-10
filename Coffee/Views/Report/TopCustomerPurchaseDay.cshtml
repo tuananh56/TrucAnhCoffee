@@ -1,0 +1,27 @@
+﻿@model List<Coffee.Models.ReportViewModel>
+
+@{
+    ViewBag.Title = "Ngày có nhiều khách hàng mua hàng";
+}
+
+<h2>📊 Ngày có nhiều khách hàng mua hàng</h2>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>📅 Tháng</th>
+            <th>👥 Số khách hàng</th>
+            <th>🧾 Số đơn hàng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Month.ToString("dd/MM/yyyy")</td>
+                
+                <td>@item.TotalOrders</td>
+            </tr>
+        }
+    </tbody>
+</table>

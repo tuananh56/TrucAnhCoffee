@@ -1,0 +1,74 @@
+﻿@model Coffee.Models.EditProfileViewModel
+
+@{
+    ViewBag.Title = "Chỉnh sửa hồ sơ";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center text-primary fw-bold">📝 Chỉnh sửa Hồ Sơ</h2>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success text-center">@TempData["SuccessMessage"]</div>
+        }
+
+        @using (Html.BeginForm("EditProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="text-center mb-3">
+                <div class="position-relative d-inline-block">
+                    <img src="@Model.Avatar" class="rounded-circle shadow-lg border border-3 border-primary"
+                         width="150" height="150" alt="Avatar" id="previewAvatar">
+                    <input type="file" name="avatarFile" class="form-control mt-2 d-none" id="avatarInput"
+                           onchange="previewImage(event)">
+                    <br />
+                    <button type="button" class="btn btn-outline-primary mt-2" onclick="document.getElementById('avatarInput').click();">
+                        📸 Chọn ảnh đại diện
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold"><i class="fas fa-user"></i> Họ tên</label>
+                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", placeholder = "Nhập họ tên" })
+                @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold"><i class="fas fa-envelope"></i> Email</label>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Nhập email", type = "email" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold"><i class="fas fa-phone"></i> Số điện thoại</label>
+                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Nhập số điện thoại", type = "tel" })
+                @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold"><i class="fas fa-map-marker-alt"></i> Địa chỉ</label>
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Nhập địa chỉ" })
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 fw-bold">
+                💾 Lưu thay đổi
+            </button>
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('previewAvatar');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+}

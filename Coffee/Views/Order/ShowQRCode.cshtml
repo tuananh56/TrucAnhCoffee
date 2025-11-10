@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Thanh toán VNPay";
+}
+
+<h2>Quét mã QR để thanh toán</h2>
+
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=@ViewBag.QrUrl" alt="QR Code VNPay" />
+
+<p>Sử dụng ứng dụng ngân hàng để quét mã QR và thanh toán.</p>
+
+<a href="@ViewBag.QrUrl" class="btn btn-primary">Mở VNPay</a>

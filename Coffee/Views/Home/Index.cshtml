@@ -1,0 +1,150 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="5000">
+                <img src="/img/banner1.png" class="d-block w-100" alt="Trúc Anh Coffee">
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="/img/banner2.png" class="d-block w-100" alt="Trúc Anh Coffee">
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="/img/banner3.png" class="d-block w-100" alt="Trúc Anh Coffee">
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="/img/banner4.png" class="d-block w-100" alt="Trúc Anh Coffee">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <hr class="my-5 m-auto w-50 border-dark" />
+
+    <!-- Phần giới thiệu -->
+    <section class="container text-center my-5">
+        <h2 class="section-title">Trúc Anh Coffee – Hương Vị Đậm Đà, Trải Nghiệm Tuyệt Vời</h2>
+        <p class="section-description">
+            Chào mừng bạn đến với <strong>Trúc Anh Coffee</strong>, nơi mang đến những ly cà phê thơm ngon, chất lượng và đậm đà hương vị Việt Nam!
+            Chúng tôi tự hào là một thương hiệu chuyên cung cấp các loại cà phê nguyên chất, đồ uống sáng tạo và trải nghiệm thưởng thức cà phê tuyệt vời nhất dành cho khách hàng.
+        </p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <h4>☕ Cà phê nguyên chất</h4>
+                    <p>Hạt cà phê được tuyển chọn kỹ lưỡng, rang xay theo công thức riêng để giữ trọn vẹn hương vị.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <h4>🚀 Giao hàng nhanh chóng</h4>
+                    <p>Đặt hàng dễ dàng qua website, giao hàng nhanh chóng để bạn tận hưởng cà phê tươi ngon mỗi ngày.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <h4>💬 Kết nối với khách hàng</h4>
+                    <p>Chúng tôi luôn lắng nghe góp ý từ bạn để hoàn thiện sản phẩm và dịch vụ ngày một tốt hơn.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="my-5 m-auto w-50 border-dark" />
+
+    <section class="container text-center my-5">
+        <h3 class="mb-3">Góp Ý Của Bạn Sẽ Giúp Chúng Tôi Phát Triển Tốt Hơn</h3>
+
+        <!-- Hàng chứa 5 ngôi sao -->
+        <div class="mb-3">
+            <span class="star" data-value="1">&#9733;</span>
+            <span class="star" data-value="2">&#9733;</span>
+            <span class="star" data-value="3">&#9733;</span>
+            <span class="star" data-value="4">&#9733;</span>
+            <span class="star" data-value="5">&#9733;</span>
+        </div>
+
+        <!-- Ô nhập góp ý -->
+        <textarea class="form-control mb-3 w-75 m-auto" id="feedback" rows="3" placeholder="Hãy chia sẻ cảm nhận của bạn..."></textarea>
+
+        <!-- Nút gửi đánh giá -->
+        <button class="btn btn-primary" id="submitReview">Góp ý</button>
+    </section>
+
+</main>
+
+<!-- CSS -->
+<style>
+    .section-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #8B4513;
+    }
+
+    .section-description {
+        font-size: 1.2rem;
+        color: #444;
+        margin-bottom: 20px;
+    }
+
+    .feature-box {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-box h4 {
+            color: #D2691E;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-box p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+    .star {
+        font-size: 2rem;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+        .star:hover,
+        .star.selected {
+            color: #FFD700;
+        }
+</style>
+
+<!-- JavaScript cho đánh giá sao -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const stars = document.querySelectorAll(".star");
+        stars.forEach(star => {
+            star.addEventListener("click", function () {
+                let value = this.getAttribute("data-value");
+                stars.forEach(s => s.classList.remove("selected"));
+                for (let i = 0; i < value; i++) {
+                    stars[i].classList.add("selected");
+                }
+            });
+        });
+    });
+</script>

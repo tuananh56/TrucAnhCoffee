@@ -1,0 +1,72 @@
+﻿@model Coffee.Models.Product
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+}
+
+<h2 class="mb-4 text-primary fw-bold"><i class="fas fa-info-circle"></i> Chi tiết sản phẩm</h2>
+
+<div class="card shadow-sm p-4 bg-white rounded mb-4">
+
+    <div class="row">
+        <!-- Hình ảnh -->
+        <div class="col-md-4 text-center mb-3 mb-md-0">
+            @if (!string.IsNullOrEmpty(Model.ImageURL))
+            {
+                <img src="@Url.Content(Model.ImageURL)" alt="@Model.Name" class="img-fluid rounded shadow-sm" style="max-height: 250px;" />
+            }
+            else
+            {
+                <img src="/Content/images/no-image.png" alt="Chưa có ảnh" class="img-fluid rounded shadow-sm" style="max-height: 250px;" />
+            }
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="col-md-8">
+            <h4 class="fw-semibold">@Model.Name</h4>
+            <hr />
+            <dl class="row mb-0">
+
+                <dt class="col-sm-4 fw-semibold">Mô tả</dt>
+                <dd class="col-sm-8">@Model.Description ?? "-" </dd>
+
+                <dt class="col-sm-4 fw-semibold">Giá</dt>
+                <dd class="col-sm-8 text-danger fw-bold">@Model.Price.ToString("N0") VNĐ</dd>
+
+                <dt class="col-sm-4 fw-semibold">Danh mục</dt>
+                <dd class="col-sm-8">@Model.DanhMuc?.TenDanhMuc ?? "Chưa phân loại"</dd>
+
+                <dt class="col-sm-4 fw-semibold">Ngày tạo</dt>
+                <dd class="col-sm-8">@Model.CreatedAt?.ToString("dd/MM/yyyy") ?? "-" </dd>
+
+                <dt class="col-sm-4 fw-semibold">URL hình ảnh</dt>
+                <dd class="col-sm-8 text-truncate" title="@Model.ImageURL">@Model.ImageURL ?? "-" </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4 text-end">
+        @Html.ActionLink("Chỉnh sửa", "Edit", new { id = Model.ProductID }, new { @class = "btn btn-warning me-2" })
+        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+    </div>
+
+</div>
+
+<style>
+    .card {
+        transition: all 0.2s ease-in-out;
+    }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    dt {
+        font-weight: 600;
+    }
+
+    dd {
+        margin-bottom: 0.75rem;
+    }
+</style>

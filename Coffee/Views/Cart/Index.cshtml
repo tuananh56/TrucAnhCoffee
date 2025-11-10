@@ -1,0 +1,147 @@
+﻿@model List<Coffee.Models.Cart>
+
+@{
+    ViewBag.Title = "Giỏ hàng";
+}
+
+<div class="cart-container">
+    <h2 class="cart-title mt-3">🛒 Giỏ hàng của bạn</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning" role="alert">
+            Giỏ hàng của bạn đang trống! <a href="@Url.Action("Index", "Product")" class="alert-link">Tiếp tục mua sắm</a>.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive shadow-sm rounded bg-white p-3 mt-3">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Product.Name</td>
+                            <td>@String.Format("{0:N0} VNĐ", item.Product.Price)</td>
+                            <td>
+                                <form action="@Url.Action("UpdateCart", "Cart")" method="post" class="d-flex">
+                                    <input type="hidden" name="cartId" value="@item.CartID" />
+                                    <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control form-control-sm w-50 me-2" />
+                                    <button type="submit" class="btn btn-sm btn-success">✔</button>
+                                </form>
+                            </td>
+                            <td>@String.Format("{0:N0} VNĐ", item.Quantity * item.Product.Price)</td>
+                            <td>
+                                <a href="@Url.Action("RemoveFromCart", "Cart", new { cartId = item.CartID })" class="btn btn-sm btn-danger">🗑</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cart-actions d-flex justify-content-between mt-4 flex-wrap gap-2">
+            <a href="@Url.Action("Index", "Product")" class="btn btn-outline-secondary btn-lg">🔄 Tiếp tục mua sắm</a>
+
+            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                🛍 Đặt hàng
+            </button>
+        </div>
+
+        <!-- Modal chọn phương thức thanh toán -->
+        <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 shadow-lg">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="paymentModalLabel">Chọn phương thức thanh toán</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="checkoutForm" action="@Url.Action("Checkout", "Order")" method="post">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="paymentMethod" value="COD" id="cod" checked>
+                                <label class="form-check-label" for="cod">💵 Thanh toán khi nhận hàng (COD)</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="paymentMethod" value="VNPay" id="vnpay">
+                                <label class="form-check-label" for="vnpay">💳 Thanh toán qua VNPay</label>
+                            </div>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                                <button type="submit" class="btn btn-success">Xác nhận</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .cart-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 15px;
+    }
+
+    .cart-title {
+        color: #6b4226;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    table.table {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    table.table th, table.table td {
+        vertical-align: middle;
+    }
+
+    table.table-hover tbody tr:hover {
+        background-color: #fff3e0;
+        transition: background 0.3s;
+    }
+
+    .cart-actions .btn-lg {
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 10px 20px;
+        transition: transform 0.2s, background 0.3s;
+    }
+
+    .cart-actions .btn-lg:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Modal custom */
+    .modal-content {
+        border-radius: 15px;
+    }
+
+    .form-check-input:checked {
+        background-color: #6b4226;
+        border-color: #6b4226;
+    }
+
+    .form-check-label {
+        font-weight: 500;
+    }
+
+    @@media (max-width: 576px) {
+        .cart-actions {
+            flex-direction: column;
+        }
+    }
+</style>

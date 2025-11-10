@@ -1,0 +1,24 @@
+﻿
+@model List<Coffee.Models.ReportViewModel>
+
+<h2>Báo Cáo Doanh Thu Theo Tháng</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Năm</th>
+            <th>Tháng</th>
+            <th>Doanh thu (VNĐ)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Year</td>
+                <td>@item.Month</td>
+                <td>@item.TotalRevenue.ToString("N0")</td>
+            </tr>
+        }
+    </tbody>
+</table>

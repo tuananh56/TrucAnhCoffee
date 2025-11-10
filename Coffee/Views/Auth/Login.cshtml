@@ -1,0 +1,136 @@
+﻿@model Coffee.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Đăng nhập";
+}
+
+<div class="login-container">
+    <div class="login-box shadow-lg">
+        <img src="~/img/logomini.png" alt="Coffee Logo" class="logo-img" />
+        <h2 class="mb-4">Đăng Nhập</h2>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
+        @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group mb-3">
+                @Html.TextBoxFor(m => m.Username, new { @class = "form-control form-control-lg", placeholder = "Tên đăng nhập" })
+                @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-lg", placeholder = "Mật khẩu" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <button type="submit" class="btn btn-coffee btn-lg w-100 mb-3">Đăng nhập</button>
+
+            <p class="text-center mb-0">
+                Chưa có tài khoản?
+                <a href="@Url.Action("Register", "Auth")" class="text-decoration-none link-coffee">Đăng ký</a>
+            </p>
+        }
+    </div>
+</div>
+
+<style>
+    body {
+        background: url('/Content/images/bg-coffee.jpg') no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 15px;
+    }
+
+    .login-box {
+        background: rgba(255, 250, 245, 0.95);
+        padding: 40px 30px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .login-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+    }
+
+    .logo-img {
+        max-width: 100px;
+        max-height: 100px;
+        margin: 0 auto 20px auto;
+        object-fit: contain;
+        border-radius: 50%;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease;
+    }
+
+    .logo-img:hover {
+        transform: scale(1.1);
+    }
+
+    h2 {
+        color: #6b4226; /* màu nâu coffee */
+        font-weight: 600;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        border: 1px solid #d1a77c;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #6b4226;
+        box-shadow: 0 0 5px rgba(107,66,38,0.5);
+        outline: none;
+    }
+
+    .btn-coffee {
+        background-color: #6b4226;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-coffee:hover {
+        background-color: #4d2c18;
+        transform: translateY(-2px);
+    }
+
+    .link-coffee {
+        color: #6b4226;
+        font-weight: 500;
+    }
+
+    .link-coffee:hover {
+        text-decoration: underline;
+        color: #4d2c18;
+    }
+
+    @@media (max-width: 576px) {
+        .login-box {
+            padding: 30px 20px;
+        }
+
+        .logo-img {
+            max-width: 80px;
+            max-height: 80px;
+        }
+    }
+</style>

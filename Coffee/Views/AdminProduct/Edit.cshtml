@@ -1,0 +1,108 @@
+﻿@model Coffee.Models.Product
+
+@{
+    ViewBag.Title = "Chỉnh sửa sản phẩm";
+}
+
+<h2 class="mb-4 text-primary fw-bold"><i class="fas fa-edit"></i> Chỉnh sửa sản phẩm</h2>
+
+@using (Html.BeginForm("Edit", "AdminProduct", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ProductID)
+
+    <div class="card shadow-sm p-4 bg-white rounded">
+
+        <!-- Tên sản phẩm -->
+        <div class="mb-3 row">
+            @Html.LabelFor(model => model.Name, "Tên sản phẩm", new { @class = "col-sm-2 col-form-label fw-semibold" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Nhập tên sản phẩm" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <!-- Mô tả -->
+        <div class="mb-3 row">
+            @Html.LabelFor(model => model.Description, "Mô tả", new { @class = "col-sm-2 col-form-label fw-semibold" })
+            <div class="col-sm-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 4, placeholder = "Nhập mô tả sản phẩm" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <!-- Giá -->
+        <div class="mb-3 row">
+            @Html.LabelFor(model => model.Price, "Giá", new { @class = "col-sm-2 col-form-label fw-semibold" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Nhập giá sản phẩm" })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <!-- Danh mục -->
+        <div class="mb-3 row">
+            @Html.LabelFor(model => model.MaDanhMuc, "Danh mục", new { @class = "col-sm-2 col-form-label fw-semibold" })
+            <div class="col-sm-10">
+                @Html.DropDownListFor(model => model.MaDanhMuc, (SelectList)ViewBag.DanhMuc, "Chọn danh mục", new { @class = "form-select" })
+                @Html.ValidationMessageFor(model => model.MaDanhMuc, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <!-- Hình ảnh hiện tại -->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label fw-semibold">Hình ảnh hiện tại</label>
+            <div class="col-sm-10">
+                @if (!string.IsNullOrEmpty(Model.ImageURL))
+                {
+                    <img src="@Url.Content(Model.ImageURL)" alt="Hình ảnh sản phẩm" class="img-thumbnail shadow-sm" style="max-width: 200px;" />
+                }
+                else
+                {
+                    <p class="text-muted">Chưa có hình ảnh sản phẩm.</p>
+                }
+            </div>
+        </div>
+
+        <!-- Tải ảnh mới -->
+        <div class="mb-4 row">
+            <label class="col-sm-2 col-form-label fw-semibold">Tải ảnh mới</label>
+            <div class="col-sm-10">
+                <input type="file" name="imageFile" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Nút lưu & quay lại -->
+        <div class="text-end">
+            <input type="submit" value="Lưu" class="btn btn-primary me-2" />
+            @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+}
+
+<style>
+    /* Focus input & select */
+    .form-control:focus, .form-select:focus {
+        box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+        border-color: #0d6efd;
+    }
+
+    /* Card hover */
+    .card {
+        transition: all 0.25s ease-in-out;
+    }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+    h2 {
+        font-weight: 600;
+    }
+
+    /* Responsive textarea */
+    textarea.form-control {
+        resize: vertical;
+    }
+</style>

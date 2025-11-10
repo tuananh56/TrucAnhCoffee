@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Coffee.Models.Product>
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+
+<h2 class="mb-4"><i class="fas fa-box-open"></i> Quản lý Sản phẩm</h2>
+
+<div class="row mb-3 align-items-center">
+    <div class="col-md-6 mb-2 mb-md-0">
+        @using (Html.BeginForm("Index", "AdminProduct", FormMethod.Get))
+        {
+            <div class="input-group shadow-sm rounded">
+                <input type="text" name="search" value="@Request.QueryString["search"]" class="form-control border-0" placeholder="🔍 Nhập tên sản phẩm..." />
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Tìm kiếm</button>
+            </div>
+        }
+    </div>
+    <div class="col-md-6 text-md-end">
+        <a href="@Url.Action("Create")" class="btn btn-success shadow-sm"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+    </div>
+</div>
+
+<div class="table-responsive shadow-sm rounded bg-white">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Mô tả</th>
+                <th>Giá</th>
+                <th>Hình ảnh</th>
+                <th>Ngày tạo</th>
+                <th>Danh mục</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(item.Name ?? "-")</td>
+                    <td>@(item.Description ?? "-")</td>
+                    <td class="text-danger fw-bold text-end">@item.Price.ToString("N0") VNĐ</td>
+
+                    <td class="text-center">
+                        <img src="@(string.IsNullOrEmpty(item.ImageURL) ? "/Content/images/no-image.png" : item.ImageURL)"
+                             alt="@(item.Name ?? "Sản phẩm")"
+                             class="img-thumbnail rounded"
+                             style="width:60px; height:60px; object-fit:cover;" />
+                    </td>
+                    <td class="text-center">@((item.CreatedAt.HasValue ? item.CreatedAt.Value.ToString("dd/MM/yyyy") : "-"))</td>
+                    <td class="text-center">@(item.DanhMuc?.TenDanhMuc ?? "Chưa phân loại")</td>
+                    <td class="text-center">
+                        <a href="@Url.Action("Edit", new { id = item.ProductID })" class="btn btn-warning btn-sm me-1 mb-1"><i class="fas fa-edit"></i></a>
+                        <a href="@Url.Action("Details", new { id = item.ProductID })" class="btn btn-info btn-sm me-1 mb-1"><i class="fas fa-eye"></i></a>
+
+                        @using (Html.BeginForm("Delete", "AdminProduct", FormMethod.Post,
+         new { onsubmit = "return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');", style = "display:inline;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("id", item.ProductID)
+                            <button type="submit" class="btn btn-danger btn-sm mb-1">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    /* Table hover highlight */
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.01);
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* Buttons */
+    .btn-sm {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-sm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Search input */
+    .input-group input {
+        border-radius: 0.375rem 0 0 0.375rem;
+    }
+
+    .input-group button {
+        border-radius: 0 0.375rem 0.375rem 0;
+    }
+
+    /* Responsive table scroll */
+    @@media (max-width: 768px) {
+        .table-responsive {
+            overflow-x: auto;
+        }
+    }
+</style>

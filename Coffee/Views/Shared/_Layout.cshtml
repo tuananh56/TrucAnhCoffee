@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Trúc Anh Coffee</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/img/logomini.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebCoffee.styles.css" asp-append-version="true" />
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("styles", required: false)
+
+    <style>
+        /* Navbar hover effect */
+        .navbar-nav .nav-link {
+            transition: all 0.3s ease;
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: #fff;
+                text-shadow: 0 0 5px #000;
+            }
+
+        /* Avatar */
+        .nav-link img {
+            border: 2px solid #fff;
+            transition: transform 0.2s;
+        }
+
+            .nav-link img:hover {
+                transform: scale(1.1);
+            }
+
+        /* Dropdown animation */
+        .dropdown-menu {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @@keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Fixed top navbar spacing */
+        body {
+            padding-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-warning shadow-sm fixed-top">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Index", "Home")">
+                    <img src="/img/logo cafe.png" alt="logo" height="40" class="me-2" />
+                </a>
+
+
+                <!-- Hamburger -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <!-- Left menu -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                        <li class="nav-item">@Html.ActionLink("📦 Sản phẩm", "Index", "Product", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("☎️ Liên hệ", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                        @if (Session["Role"] != null && Session["Role"].ToString() == "Admin")
+                        {
+                            <li class="nav-item">@Html.ActionLink("⚙️ Quản trị", "Dashboard", "Admin", new { area = "" }, new { @class = "nav-link" })</li>
+                        }
+                    </ul>
+
+                    <!-- Right user menu -->
+                    <ul class="navbar-nav ms-auto">
+                        @if (Session["Username"] != null)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center"
+                                   href="#" id="userDropdown"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <img src="@Url.Content(Session["Avatar"] != null && !string.IsNullOrEmpty(Session["Avatar"].ToString())
+            ? Session["Avatar"].ToString()
+            : "~/img/default-avatar.png")"
+                                         class="rounded-circle me-2" alt="Avatar" width="32" height="32" />
+                                    <span>👋 @Session["Username"]</span>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    @if (Session["Role"] != null && Session["Role"].ToString() == "Admin")
+                                    {
+                                        <li>@Html.ActionLink("⚙️ Trang Quản Trị", "Dashboard", "Admin", null, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("🛍️ Lịch sử mua hàng", "OrderHistory", "Order", null, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("📦 Đơn hàng của tôi", "XemDH", "Order", null, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("🛒 Giỏ hàng", "Checkout", "Order", null, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("👤 Quản lý người dùng", "Index", "User", null, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("📦 Quản lý sản phẩm", "Index", "AdminProduct", null, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("📝 Quản lý đơn hàng", "Index", "Order", null, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("📊 Báo cáo", "Index", "Report", null, new { @class = "dropdown-item" })</li>
+                                    }
+                                    else if (Session["Role"] != null && Session["Role"].ToString() == "User")
+                                    {
+                                        <li>@Html.ActionLink("🛍️ Lịch sử mua hàng", "OrderHistory", "Order", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("📦 Đơn hàng của tôi", "XemDH", "Order", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("🛒 Giỏ hàng", "Checkout", "Order", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("👤 Thông tin tài khoản", "Profiles", "User", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("🔑 Đổi mật khẩu", "ChangePassword", "User", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                        <li>@Html.ActionLink("✏️ Chỉnh sửa thông tin", "EditProfiles", "User", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                    }
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>@Html.ActionLink("🚪 Đăng xuất", "Logout", "Auth", new { area = "" }, new { @class = "dropdown-item text-danger" })</li>
+                                </ul>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">@Html.ActionLink("Đăng nhập", "Login", "Auth", new { area = "" }, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Đăng ký", "Register", "Auth", new { area = "" }, new { @class = "nav-link btn btn-outline-light ms-2 rounded-pill px-3" })</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container body-content mt-4">
+        @RenderBody()
+        <hr />
+        <footer class="text-center my-4">
+            <p>&copy; @DateTime.Now.Year - Trúc Anh Coffee</p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

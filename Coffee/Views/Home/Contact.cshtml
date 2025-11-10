@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewData["Title"] = "LienHe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <div class="container">
+        <div id="contact">
+            <h1>Liên hệ với chúng tôi</h1>
+            <div class="form-contact">
+                <div class="row mb-3">
+                    <div class="col-3 contact-item">
+                        <label>Tên của bạn: </label>
+                    </div>
+
+                    <div class="col-9">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="UserName" placeholder="Tên của bạn">
+                            <label for="UserName">Tên của bạn</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-3 contact-item">
+                        <label>Số điện thoại: </label>
+                    </div>
+
+                    <div class="col-9">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="phoneNumber" placeholder="Số điện thoại">
+                            <label for="phoneNumber">Số điện thoại</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-3 contact-item">
+                        <label>Địa chỉ Email: </label>
+                    </div>
+
+                    <div class="col-9">
+                        <div class="form-floating ">
+                            <input type="email" class="form-control" id="Email" placeholder="Địa chỉ Email">
+                            <label for="Email">Địa chỉ Email</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-3">
+                        <label style="font-size:18px; padding-top:15px">Nội dung: </label>
+                    </div>
+
+                    <div class="col-9">
+                        <div class="form-floating ">
+                            <textarea class="form-control" id="Content" placeholder="Nội dung" style="height:150px"></textarea>
+                            <label for="Content">Nội dung</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-content">Gửi</button>
+            </div>
+        </div>
+    </div>
+</main>
+

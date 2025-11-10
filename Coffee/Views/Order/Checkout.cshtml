@@ -1,0 +1,45 @@
+﻿@model List<Coffee.Models.Cart>
+
+@{
+    ViewBag.Title = "Thanh toán";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold">Xác nhận đơn hàng</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Tổng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Product.Price VNĐ</td>
+                    <td>@(item.Quantity * item.Product.Price) VNĐ</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4 class="text-danger">Tổng tiền: @ViewBag.TotalAmount VNĐ</h4>
+
+    <form method="post" action="@Url.Action("CheckoutConfirm", "Cart")">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label>Chọn phương thức thanh toán:</label>
+            <select name="paymentMethod" class="form-control">
+                <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+                <option value="VNPay">Thanh toán qua VNPay</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success mt-3">Xác nhận thanh toán</button>
+        <a href="@Url.Action("Index", "Cart")" class="btn btn-secondary mt-3">Quay lại giỏ hàng</a>
+    </form>
+</div>

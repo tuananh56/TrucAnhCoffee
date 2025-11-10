@@ -1,0 +1,74 @@
+﻿@model Coffee.Models.Order
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    var orderDetails = ViewBag.OrderDetails as List<Coffee.Models.OrderDetail>;
+}
+
+<h2 class="fw-bold">Chi tiết đơn hàng #@Model.OrderID</h2>
+<p>Khách hàng: @Model.User.FullName</p>
+<p>Ngày đặt: @(Model.OrderDate?.ToString("dd/MM/yyyy") ?? "Chưa có dữ liệu")</p>
+
+
+<p>Tổng tiền: @String.Format("{0:N0} VNĐ", Model.TotalAmount)</p>
+<p>Trạng thái: <strong>@Model.Status</strong></p>
+
+
+<!-- Cập nhật trạng thái đơn hàng -->
+<form method="post" action="@Url.Action("UpdateStatus", "Order")">
+    <input type="hidden" name="id" value="@Model.OrderID" />
+    <div class="order-status-box">
+        <label for="status"><strong>Trạng thái đơn hàng</strong></label>
+        <select name="status" class="form-control mt-2 mb-2">
+            <option value="Chua giao" @(Model.Status == "Chưa giao" ? "selected" : "")>Chưa giao</option>
+            <option value="Dang giao" @(Model.Status == "Đang giao" ? "selected" : "")>Đang giao</option>
+            <option value="Da giao" @(Model.Status == "Đã giao" ? "selected" : "")>Đã giao</option>
+            <option value="Giao hang that bai" @(Model.Status == "Giao hàng thất bại" ? "selected" : "")>Giao hàng thất bại</option>
+        </select>
+        <button type="submit" class="btn btn-primary mt-2">Cập nhật</button>
+    </div>
+</form>
+
+
+
+<h3 class="mt-4">Sản phẩm trong đơn hàng</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in orderDetails)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>@item.Quantity</td>
+                <td>@String.Format("{0:N0} VNĐ", item.Price)</td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@Url.Action("Index", "Order")" class="btn btn-secondary">Quay lại</a>
+<style>
+    .order-status-box {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+        .order-status-box select,
+        .order-status-box button {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+</style>

@@ -1,0 +1,25 @@
+﻿@model Coffee.Models.Order
+
+@{
+    ViewBag.Title = "RevenueReport";
+}
+
+
+<h2>Thống kê doanh thu năm @ViewBag.Year</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tháng</th>
+            <th>Doanh thu (VNĐ)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Month</td>
+                <td>@String.Format("{0:N0}", item.TotalRevenue) VNĐ</td>
+            </tr>
+        }
+    </tbody>
+</table>

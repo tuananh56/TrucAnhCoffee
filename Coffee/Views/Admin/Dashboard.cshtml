@@ -1,0 +1,110 @@
+﻿@model Coffee.Models.User
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center fw-bold text-primary mb-5">⚙️ Dashboard Quản Trị</h2>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4 justify-content-center">
+        <div class="col">
+            <a href="@Url.Action("Index", "User")" class="dashboard-card">
+                <div class="card h-100 text-center p-4 rounded-4 shadow-sm card-gradient">
+                    <img src="~/Content/images/user.png" alt="Quản lý người dùng" class="icon mb-3">
+                    <h5 class="fw-semibold">Quản lý người dùng</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="@Url.Action("Index", "AdminProduct")" class="dashboard-card">
+                <div class="card h-100 text-center p-4 rounded-4 shadow-sm card-gradient">
+                    <img src="~/Content/images/box.png" alt="Quản lý sản phẩm" class="icon mb-3">
+                    <h5 class="fw-semibold">Quản lý sản phẩm</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="@Url.Action("Index", "Order")" class="dashboard-card">
+                <div class="card h-100 text-center p-4 rounded-4 shadow-sm card-gradient">
+                    <img src="~/Content/images/checkout.png" alt="Quản lý đơn hàng" class="icon mb-3">
+                    <h5 class="fw-semibold">Quản lý đơn hàng</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="@Url.Action("Index", "Report")" class="dashboard-card">
+                <div class="card h-100 text-center p-4 rounded-4 shadow-sm card-gradient">
+                    <img src="~/Content/images/report.png" alt="Thống kê" class="icon mb-3">
+                    <h5 class="fw-semibold">Thống kê doanh thu</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="@Url.Action("Index", "DanhMuc")" class="dashboard-card">
+                <div class="card h-100 text-center p-4 rounded-4 shadow-sm card-gradient">
+                    <img src="~/Content/images/menu.png" alt="Quản lý danh mục" class="icon mb-3">
+                    <h5 class="fw-semibold">Quản lý danh mục</h5>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Card container */
+    .dashboard-card {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Card styling */
+    .dashboard-card .card {
+        background: #ffffff;
+        border: none;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Card hover effect */
+    .dashboard-card:hover .card {
+        transform: translateY(-10px) scale(1.03);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+    }
+
+    /* Card gradient */
+    .card-gradient {
+        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    }
+
+    /* Icon styling */
+    .dashboard-card .icon {
+        width: 80px;
+        height: 80px;
+        transition: transform 0.3s ease;
+    }
+
+    .dashboard-card:hover .icon {
+        transform: scale(1.2) rotate(5deg);
+    }
+
+    /* Title */
+    .dashboard-card h5 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin: 0;
+        color: #333;
+    }
+
+    /* Responsive for small screens */
+    @@media (max-width: 576px) {
+        .dashboard-card .icon {
+            width: 60px;
+            height: 60px;
+        }
+        .dashboard-card h5 {
+            font-size: 1rem;
+        }
+    }
+</style>

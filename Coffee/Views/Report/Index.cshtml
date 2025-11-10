@@ -1,0 +1,130 @@
+﻿@model List<Coffee.Models.ReportViewModel>
+
+<h2 class="text-center mb-4 text-primary fw-bold"><i class="fas fa-chart-bar"></i> Báo Cáo Doanh Thu</h2>
+
+<div class="text-center mb-3">
+    <button id="toggleChart" class="btn btn-info me-2"><i class="fas fa-chart-line"></i> Chuyển sang Biểu Đồ Cột</button>
+    <button id="toggleTable" class="btn btn-warning"><i class="fas fa-table"></i> Chuyển sang Bảng</button>
+</div>
+
+<!-- Card biểu đồ -->
+<div id="chartContainer" class="card shadow-sm p-4 mb-4">
+    <canvas id="revenueChart" style="height:400px;"></canvas>
+</div>
+
+<!-- Card bảng dữ liệu -->
+<div id="tableContainer" class="card shadow-sm p-4 mb-4" style="display: none;">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered text-center align-middle mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Năm</th>
+                    <th>Tháng</th>
+                    <th>Tổng Doanh Thu (VNĐ)</th>
+                    <th>Tổng Đơn Hàng</th>
+                    <th>Tổng Sản Phẩm Đã Bán</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Year</td>
+                        <td>@item.Month</td>
+                        <td class="text-danger fw-bold">@item.TotalRevenue.ToString("N0")</td>
+                        <td>@item.TotalOrders</td>
+                        <td>@item.TotalProductsSold</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="text-center mb-5">
+    <a href="@Url.Action("Index", "Report", new { reportType = "monthly" })" class="btn btn-success me-2">
+        <i class="fas fa-calendar-alt"></i> Báo cáo theo tháng
+    </a>
+    <a href="@Url.Action("Index", "Report", new { reportType = "yearly" })" class="btn btn-warning">
+        <i class="fas fa-chart-line"></i> Báo cáo theo năm
+    </a>
+</div>
+
+<style>
+    .card {
+        border-radius: 0.75rem;
+        transition: all 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .btn {
+        transition: all 0.2s ease-in-out;
+    }
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+    @@media (max-width: 768px) {
+        #chartContainer, #tableContainer {
+            overflow-x: auto;
+        }
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var labels = @Html.Raw(Json.Encode(Model.Select(x => x.Month + "/" + x.Year)));
+    var revenueData = @Html.Raw(Json.Encode(Model.Select(x => x.TotalRevenue)));
+
+    var ctx = document.getElementById('revenueChart').getContext('2d');
+    var currentChartType = 'line';
+    var isTableVisible = false;
+
+    function createChart(type) {
+        if (window.myChart) window.myChart.destroy();
+
+        window.myChart = new Chart(ctx, {
+            type: type,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Tổng Doanh Thu (VNĐ)',
+                    data: revenueData,
+                    backgroundColor: type === 'line' ? 'rgba(54, 162, 235, 0.2)' : 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: type === 'line',
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    }
+
+    createChart(currentChartType);
+
+    document.getElementById('toggleChart').addEventListener('click', function () {
+        if (isTableVisible) return;
+        currentChartType = currentChartType === 'line' ? 'bar' : 'line';
+        createChart(currentChartType);
+        this.innerHTML = currentChartType === 'line' ? '<i class="fas fa-chart-line"></i> Chuyển sang Biểu Đồ Cột' : '<i class="fas fa-chart-line"></i> Chuyển sang Biểu Đồ Đường';
+    });
+
+    document.getElementById('toggleTable').addEventListener('click', function () {
+        isTableVisible = !isTableVisible;
+        document.getElementById('chartContainer').style.display = isTableVisible ? 'none' : 'block';
+        document.getElementById('tableContainer').style.display = isTableVisible ? 'block' : 'none';
+        document.getElementById('toggleChart').disabled = isTableVisible;
+        this.innerHTML = isTableVisible ? '<i class="fas fa-chart-line"></i> Chuyển sang Biểu Đồ' : '<i class="fas fa-table"></i> Chuyển sang Bảng';
+    });
+</script>

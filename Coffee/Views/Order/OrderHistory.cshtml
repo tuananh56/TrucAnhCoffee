@@ -1,0 +1,121 @@
+﻿@model List<Coffee.Models.Order>
+
+<h2 class="text-center my-4 text-coffee fw-bold">🛍️ Lịch sử mua hàng</h2>
+
+<!-- Form Tìm kiếm & Lọc -->
+<div class="row mb-4 g-3">
+    <div class="col-md-7">
+        <form method="get" action="@Url.Action("OrderHistory", "Order")" class="d-flex">
+            <input type="text" name="search" class="form-control rounded-start"
+                   placeholder="🔍 Tìm theo mã đơn hàng hoặc sản phẩm..."
+                   value="@ViewBag.Search">
+            <button type="submit" class="btn btn-coffee rounded-end ms-1">
+                <i class="fas fa-search"></i> Tìm kiếm
+            </button>
+        </form>
+    </div>
+
+    <div class="col-md-5">
+        <form method="get" class="d-flex">
+            <select name="status" class="form-select me-2 rounded">
+                <option value="">Tất cả trạng thái</option>
+                <option value="Chờ xác nhận">Chờ xác nhận</option>
+                <option value="Đang giao">Đang giao</option>
+                <option value="Đã giao">Đã giao</option>
+                <option value="Giao hàng thất bại">Giao hàng thất bại</option>
+            </select>
+            <button type="submit" class="btn btn-success rounded">
+                <i class="fas fa-filter"></i> Lọc
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Bảng hiển thị đơn hàng -->
+<div class="table-responsive">
+    <table class="table table-hover align-middle shadow-sm rounded overflow-hidden">
+        <thead class="table-coffee text-white text-center">
+            <tr>
+                <th>#</th>
+                <th>Ngày đặt</th>
+                <th>Sản phẩm</th>
+                <th class="text-end">Tổng tiền</th>
+                <th class="text-center">Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td class="text-center fw-bold">@order.OrderID</td>
+                    <td>@(order.OrderDate.HasValue ? order.OrderDate.Value.ToString("dd/MM/yyyy HH:mm") : "N/A")</td>
+                    <td>
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var item in order.OrderDetails)
+                            {
+                                <li>🛒 <strong>@item.Product.Name</strong> (x @item.Quantity)</li>
+                            }
+                        </ul>
+                    </td>
+                    <td class="text-end text-primary fw-bold">@order.TotalAmount.ToString("N0") VNĐ</td>
+                    <td class="text-center">
+                        <span class="badge
+                            @(order.Status == "Chờ xác nhận" ? "bg-warning text-dark" :
+                              order.Status == "Đang giao" ? "bg-primary" :
+                              order.Status == "Đã giao" ? "bg-success" :
+                              order.Status == "Giao hàng thất bại" ? "bg-danger" : "bg-secondary")">
+                            @order.Status
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Nút quay lại trang chủ -->
+<div class="text-center mt-4">
+    <a href="@Url.Action("Index", "Home")" class="btn btn-outline-coffee rounded-pill px-4 py-2">
+        🏠 Về trang chủ
+    </a>
+</div>
+
+<style>
+    /* Màu theme coffee */
+    .text-coffee {
+        color: #6b4226;
+    }
+
+    .btn-coffee {
+        background-color: #6b4226;
+        color: #fff;
+        border: none;
+        transition: all 0.3s;
+    }
+
+        .btn-coffee:hover {
+            background-color: #4d2c18;
+        }
+
+    .btn-outline-coffee {
+        color: #6b4226;
+        border: 2px solid #6b4226;
+        transition: all 0.3s;
+    }
+
+        .btn-outline-coffee:hover {
+            background-color: #6b4226;
+            color: #fff;
+        }
+
+    /* Table header custom */
+    .table-coffee {
+        background-color: #6b4226;
+    }
+
+    /* Shadow & rounded */
+    table.table {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+</style>

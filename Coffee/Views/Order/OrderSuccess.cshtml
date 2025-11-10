@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Đặt hàng thành công";
+}
+
+<div class="container text-center mt-5">
+    <i class="fas fa-check-circle text-success" style="font-size: 80px;"></i>
+    <h2 class="mt-3">🎉 Đặt hàng thành công!</h2>
+    <p class="lead">Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đang được xử lý.</p>
+
+    <div class="alert alert-info">
+        <strong>Mã đơn hàng:</strong> <span class="fw-bold">@ViewBag.OrderID</span><br>
+        <strong>Phương thức thanh toán:</strong> <span class="fw-bold">@ViewBag.PaymentMethod</span>
+
+    </div>
+
+    <a href="@Url.Action("Index", "Product")" class="btn btn-primary">🏠 Về trang chủ</a>
+
+    <a href="@Url.Action("XemDH", "Order", new { id = ViewBag.OrderID })" class="btn btn-warning">
+        📦 Xem đơn hàng
+    </a>
+   
+
+
+</div>

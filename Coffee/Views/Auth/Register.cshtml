@@ -1,0 +1,259 @@
+﻿@model Coffee.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Đăng ký";
+}
+
+<div class="login-container">
+    <div class="login-box shadow-lg">
+        <img src="~/img/logomini.png" alt="Coffee Logo" class="logo-img" />
+        <h2 class="mb-4">Đăng Ký Tài Khoản</h2>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
+        @if (ViewBag.Success != null)
+        {
+            <div class="alert alert-success">@ViewBag.Success</div>
+        }
+
+        @using (Html.BeginForm("Register", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group mb-3">
+                @Html.TextBoxFor(m => m.Username, new { @class = "form-control form-control-lg", placeholder = "Tên đăng nhập" })
+                @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-lg", placeholder = "Mật khẩu" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="form-control form-control-lg" placeholder="Xác nhận mật khẩu" />
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-lg", placeholder = "Email" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control form-control-lg", placeholder = "Họ và tên" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control form-control-lg", placeholder = "Số điện thoại" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control form-control-lg", placeholder = "Địa chỉ" })
+            </div>
+
+            <div class="form-group text-center mb-3">
+                <label>Ảnh đại diện</label>
+                <div class="avatar-preview mb-3">
+                    <img id="avatarPreview" src="/Content/images/default-avatar.png" alt="Avatar" />
+                </div>
+
+                <!-- Nút chọn file custom nhỏ gọn -->
+                <label class="file-upload-card" for="avatarInput">
+                    <i class="fas fa-upload me-1"></i>
+                    <span id="fileCardText">Chọn ảnh</span>
+                </label>
+                <input type="file" id="avatarInput" name="Avatar" accept="image/*" />
+            </div>
+
+            <button type="submit" class="btn btn-coffee btn-lg w-100 mb-3">Đăng ký</button>
+
+            <p class="text-center mb-0">
+                Đã có tài khoản?
+                <a href="@Url.Action("Login", "Auth")" class="text-decoration-none link-coffee">Đăng nhập</a>
+            </p>
+        }
+    </div>
+</div>
+
+<style>
+    body {
+        background: url('/Content/images/bg-coffee.jpg') no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 15px;
+    }
+
+    .login-box {
+        background: rgba(255, 250, 245, 0.95);
+        padding: 40px 30px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 450px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .login-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+    }
+
+    .logo-img {
+        max-width: 100px;
+        max-height: 100px;
+        margin: 0 auto 20px auto;
+        object-fit: contain;
+        border-radius: 50%;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease;
+    }
+
+    .logo-img:hover {
+        transform: scale(1.1);
+    }
+
+    h2 {
+        color: #6b4226;
+        font-weight: 600;
+    }
+
+    .form-control {
+        height: 45px;
+        font-size: 15px;
+        border-radius: 8px;
+        border: 1px solid #d1a77c;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #6b4226;
+        box-shadow: 0 0 5px rgba(107,66,38,0.5);
+        outline: none;
+    }
+
+    .btn-coffee {
+        background-color: #6b4226;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-coffee:hover {
+        background-color: #4d2c18;
+        transform: translateY(-2px);
+    }
+
+    .link-coffee {
+        color: #6b4226;
+        font-weight: 500;
+    }
+
+    .link-coffee:hover {
+        text-decoration: underline;
+        color: #4d2c18;
+    }
+
+    .avatar-preview {
+        width: 120px;
+        height: 120px;
+        margin: 10px auto;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #ddd;
+        transition: transform 0.3s ease;
+    }
+
+    .avatar-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .avatar-preview:hover {
+        transform: scale(1.05);
+    }
+
+   @@media (max-width: 576px) {
+        .login-box {
+            padding: 30px 20px;
+        }
+
+        .logo-img {
+            max-width: 80px;
+            max-height: 80px;
+        }
+    }
+    #avatarInput {
+        display: none;
+    }
+
+    .file-upload-card {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 14px;
+        background-color: #6b4226;
+        color: #fff;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 13px;
+        transition: background 0.3s, transform 0.2s;
+        max-width: 150px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+        .file-upload-card i {
+            font-size: 14px;
+            margin-right: 4px;
+            transition: transform 0.3s;
+        }
+
+        .file-upload-card:hover {
+            background-color: #4d2c18;
+            transform: translateY(-1px);
+        }
+
+            .file-upload-card:hover i {
+                transform: rotate(-15deg);
+            }
+</style>
+
+<script>
+    // Preview avatar
+    document.getElementById('avatarInput').addEventListener('change', function (event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            document.getElementById('avatarPreview').src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+ 
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const fileCardText = document.getElementById('fileCardText');
+
+        avatarInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if(file){
+            avatarPreview.src = URL.createObjectURL(file);
+            fileCardText.textContent = file.name.length > 15 ? file.name.substring(0,15) + "..." : file.name;
+        } else {
+            fileCardText.textContent = "Chọn ảnh";
+        avatarPreview.src = "/Content/images/default-avatar.png";
+        }
+    });
+
+</script>

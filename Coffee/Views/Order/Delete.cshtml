@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Coffee.Models.Order>
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+}
+
+<h2>Danh sách đơn hàng</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Mã đơn</th>
+            <th>Khách hàng</th>
+            <th>Ngày đặt</th>
+            <th>Trạng thái</th>
+            <th>Tổng tiền</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderID</td>
+                <td>@order.User.FullName</td>
+                <td>@order.OrderDate?.ToString("dd/MM/yyyy")</td>
+                <td>@order.Status</td>
+                <td>@String.Format("{0:#,##0}₫", order.TotalAmount)</td>
+                <td>
+                    @Html.ActionLink("Chi tiết", "Details", new { id = order.OrderID }, new { @class = "btn btn-sm btn-info" })
+
+                    <!-- Nút Xoá với xác nhận -->
+                    <button class="btn btn-sm btn-danger" onclick="confirmDelete(@order.OrderID)">Xoá</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Thêm token chống CSRF -->
+@Html.AntiForgeryToken()
+
+@section Scripts {
+    <script type="text/javascript">
+        function confirmDelete(orderId) {
+            if (confirm("Bạn có chắc muốn xoá đơn hàng này không?")) {
+                // Tạo form POST ẩn
+                var form = document.createElement("form");
+                form.method = "post";
+                form.action = "/Order/Delete/" + orderId;
+
+                // Thêm AntiForgeryToken nếu có
+                var tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                if (tokenInput) {
+                    var hiddenToken = document.createElement("input");
+                    hiddenToken.type = "hidden";
+                    hiddenToken.name = "__RequestVerificationToken";
+                    hiddenToken.value = tokenInput.value;
+                    form.appendChild(hiddenToken);
+                }
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
+}

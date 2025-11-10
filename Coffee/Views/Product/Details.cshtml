@@ -1,0 +1,148 @@
+﻿@model Coffee.Models.Product
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+}
+
+<div class="container mt-5">
+    <div class="row g-4">
+        <!-- Ảnh sản phẩm -->
+        <div class="col-md-5">
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+                <img src="@Model.ImageURL" class="card-img-top product-img" alt="@Model.Name"
+                     style="width: 100%; height: 400px; object-fit: cover;">
+            </div>
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="col-md-7 d-flex flex-column">
+            <h2 class="fw-bold text-coffee">@Model.Name</h2>
+            <p class="text-muted mb-2">Mã sản phẩm: <strong>@Model.ProductID</strong></p>
+
+            <h4 class="text-danger fw-bold mt-2">
+                <i class="fas fa-tag me-1"></i> @String.Format("{0:N0} VNĐ", Model.Price)
+            </h4>
+
+            <!-- Đánh giá -->
+            <div class="mb-3">
+                <span class="text-warning fs-5">★★★★★</span>
+                <span class="text-muted ms-2">(120 đánh giá)</span>
+            </div>
+
+            <!-- Mô tả & thông tin -->
+            <p><strong>Mô tả:</strong> @Model.Description</p>
+           
+            <p><strong>Ngày tạo:</strong> @(Model.CreatedAt?.ToString("dd/MM/yyyy") ?? "Không có dữ liệu")</p>
+
+            <!-- Thông báo khi thêm vào giỏ hàng -->
+            <div id="cartMessage" class="alert alert-success d-none mt-3 text-center fs-6" role="alert">
+                ✅ Sản phẩm đã được thêm vào giỏ hàng!
+            </div>
+
+            <!-- Nút hành động -->
+            <div class="d-flex gap-3 mt-4">
+                <button id="btnBuyNow" class="btn btn-coffee btn-lg flex-fill fw-bold">
+                    <i class="fas fa-shopping-bag me-1"></i> Mua ngay
+                </button>
+                <button id="btnAddToCart" class="btn btn-outline-coffee btn-lg flex-fill fw-bold">
+                    <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nút quay lại -->
+    <div class="mt-5 text-center">
+        <a href="@Url.Action("Index")" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Quay lại danh sách
+        </a>
+    </div>
+</div>
+
+@section styles {
+    <style>
+        .text-coffee {
+            color: #6b4226;
+        }
+
+        .btn-coffee {
+            background-color: #6b4226;
+            color: #fff;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+            .btn-coffee:hover {
+                background-color: #4d2c18;
+                transform: translateY(-2px);
+            }
+
+        .btn-outline-coffee {
+            color: #6b4226;
+            border: 2px solid #6b4226;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+            .btn-outline-coffee:hover {
+                background-color: #6b4226;
+                color: #fff;
+                transform: translateY(-2px);
+            }
+
+        .product-img {
+            transition: transform 0.3s ease-in-out;
+        }
+
+            .product-img:hover {
+                transform: scale(1.05);
+            }
+    </style>
+}
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#btnAddToCart").click(function () {
+                $.ajax({
+                    url: "@Url.Action("AddToCart", "Cart")",
+                    type: "POST",
+                    data: { productId: @Model.ProductID },
+                    success: function (response) {
+                        if (response.success) {
+                            $("#cartMessage").removeClass("d-none").hide().fadeIn().delay(1500).fadeOut();
+                        } else if (response.redirectUrl) {
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            alert("❌ Lỗi khi thêm vào giỏ hàng!");
+                        }
+                    },
+                    error: function () {
+                        alert("❌ Lỗi khi thêm vào giỏ hàng!");
+                    }
+                });
+            });
+
+            $("#btnBuyNow").click(function () {
+                $.ajax({
+                    url: "@Url.Action("AddToCart", "Cart")",
+                    type: "POST",
+                    data: { productId: @Model.ProductID },
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.href = "@Url.Action("Index", "Cart")";
+                        } else if (response.redirectUrl) {
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            alert("❌ Lỗi khi mua sản phẩm!");
+                        }
+                    },
+                    error: function () {
+                        alert("❌ Lỗi khi mua sản phẩm!");
+                    }
+                });
+            });
+        });
+    </script>
+}

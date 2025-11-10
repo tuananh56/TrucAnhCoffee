@@ -1,0 +1,87 @@
+﻿@model Coffee.Models.InvoiceViewModel
+
+@{
+    ViewBag.Title = "Hóa đơn chi tiết";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary fw-bold mb-4">🧾 Hóa đơn chi tiết</h2>
+
+    <!-- Thông tin đơn hàng -->
+    <div class="card shadow-sm p-4 mb-4 rounded-4">
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <p><strong>Mã đơn hàng:</strong> @Model.OrderID</p>
+                <p><strong>Khách hàng:</strong> @Model.CustomerName</p>
+                <p><strong>Email:</strong> @Model.Email</p>
+            </div>
+            <div class="col-md-6 mb-2">
+                <p><strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+                <p><strong>Phương thức thanh toán:</strong> @Model.PaymentMethod</p>
+                <p>
+                    <strong>Trạng thái:</strong>
+                    <span class="badge
+                        @(Model.Status == "Chờ xác nhận" ? "bg-warning text-dark" :
+                          Model.Status == "Đang giao" ? "bg-primary" :
+                          Model.Status == "Đã giao" ? "bg-success" :
+                          Model.Status == "Giao hàng thất bại" ? "bg-danger" : "bg-info")">
+                        @Model.Status
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bảng sản phẩm -->
+    <div class="table-responsive">
+        <table class="table table-hover align-middle shadow-sm rounded-4">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th class="text-center">Số lượng</th>
+                    <th class="text-end">Đơn giá</th>
+                    <th class="text-end">Tổng tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td class="text-center">@item.Quantity</td>
+                        <td class="text-end text-danger fw-bold">@item.Price.ToString("N0") VNĐ</td>
+                        <td class="text-end fw-bold">@item.TotalPrice.ToString("N0") VNĐ</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tổng tiền -->
+    <div class="text-end mt-3 mb-4 fs-5">
+        <strong>Tổng cộng: @Model.TotalAmount.ToString("N0") VNĐ</strong>
+    </div>
+
+    <!-- Nút quay lại -->
+    <div class="text-center">
+        <a href="@Url.Action("XemDH", "Order")" class="btn btn-secondary rounded-pill px-4">
+            🔙 Quay lại
+        </a>
+    </div>
+</div>
+
+@section styles {
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .rounded-4 {
+            border-radius: 1rem !important;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
+        }
+    </style>
+}

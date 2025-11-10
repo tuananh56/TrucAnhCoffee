@@ -1,0 +1,78 @@
+﻿@model Coffee.Models.Product
+
+@{
+    ViewBag.Title = "Tạo sản phẩm mới";
+}
+
+<h2 class="mb-4 text-primary"><i class="fas fa-box-open"></i> Tạo sản phẩm mới</h2>
+
+@using (Html.BeginForm("Create", "AdminProduct", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card shadow-sm p-4 bg-white rounded">
+        <div class="mb-3 row">
+            @Html.LabelFor(model => model.Name, "Tên sản phẩm", new { @class = "col-sm-2 col-form-label fw-semibold" })
+            <div class="col-sm-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên sản phẩm" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            @Html.LabelFor(model => model.Description, "Mô tả", new { @class = "col-sm-2 col-form-label fw-semibold" })
+            <div class="col-sm-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 4, placeholder = "Nhập mô tả sản phẩm" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            @Html.LabelFor(model => model.Price, "Giá", new { @class = "col-sm-2 col-form-label fw-semibold" })
+            <div class="col-sm-10">
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", type = "number", step = "0.01", placeholder = "Nhập giá sản phẩm" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            @Html.LabelFor(model => model.MaDanhMuc, "Danh mục", new { @class = "col-sm-2 col-form-label fw-semibold" })
+            <div class="col-sm-10">
+                @Html.DropDownList("MaDanhMuc", new SelectList(ViewBag.DanhMucList, "MaDanhMuc", "TenDanhMuc"), "Chọn danh mục", new { @class = "form-select" })
+                @Html.ValidationMessageFor(model => model.MaDanhMuc, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <div class="mb-4 row">
+            <label class="col-sm-2 col-form-label fw-semibold">Hình ảnh</label>
+            <div class="col-sm-10">
+                <input type="file" name="imageFile" class="form-control" />
+            </div>
+        </div>
+
+        <div class="text-end">
+            <input type="submit" value="Tạo sản phẩm" class="btn btn-success me-2" />
+            @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+}
+
+<style>
+    .form-control:focus, .form-select:focus {
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        border-color: #0d6efd;
+    }
+
+    .card {
+        transition: all 0.2s ease-in-out;
+    }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+    h2 {
+        font-weight: 600;
+    }
+</style>

@@ -1,0 +1,31 @@
+﻿@model Coffee.Models.Order
+
+<h2>Chi Tiết Đơn Hàng #@Model.OrderID</h2>
+
+<p><strong>Khách hàng:</strong> @Model.User.FullName</p>
+<p><strong>Ngày đặt hàng:</strong> @Model.OrderDate?.ToString("dd/MM/yyyy")</p>
+<p><strong>Tổng tiền:</strong> @Model.TotalAmount.ToString("C")</p>
+<p><strong>Trạng thái:</strong> @Model.Status</p>
+
+<h3>Sản phẩm trong đơn hàng</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên Sản Phẩm</th>
+            <th>Số Lượng</th>
+            <th>Giá</th>
+            <th>Tổng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderDetails)
+        {
+            <tr>
+                <td>@item.Product.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price.ToString("C")</td>
+                <td>@(item.Quantity * item.Price).ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>

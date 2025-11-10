@@ -1,0 +1,120 @@
+﻿@model Coffee.Models.EditProfileViewModel
+
+@{
+    ViewBag.Title = "Chỉnh sửa hồ sơ";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 mx-auto" style="max-width: 500px; border-radius: 15px;">
+        <h2 class="text-center text-coffee fw-bold mb-4">📝 Chỉnh sửa Hồ Sơ</h2>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success text-center">@TempData["SuccessMessage"]</div>
+        }
+
+        @using (Html.BeginForm("EditProfiles", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <!-- Avatar -->
+            <div class="text-center mb-4">
+                <div class="position-relative d-inline-block">
+                    <img src="@Model.Avatar" class="rounded-circle shadow-sm border border-3 border-coffee"
+                         width="140" height="140" alt="Avatar" id="previewAvatar">
+                    <input type="file" name="avatarFile" class="d-none" id="avatarInput" onchange="previewImage(event)">
+                    <br />
+                    <button type="button" class="btn btn-outline-coffee mt-2 fw-semibold"
+                            onclick="document.getElementById('avatarInput').click();">
+                        📸 Chọn ảnh đại diện
+                    </button>
+                </div>
+            </div>
+
+            <!-- Họ tên -->
+            <div class="mb-3">
+                <label class="form-label fw-bold"><i class="fas fa-user me-2"></i>Họ tên</label>
+                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control form-control-lg", placeholder = "Nhập họ tên" })
+                @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label class="form-label fw-bold"><i class="fas fa-envelope me-2"></i>Email</label>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-lg", placeholder = "Nhập email", type = "email" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-3">
+                <label class="form-label fw-bold"><i class="fas fa-phone me-2"></i>Số điện thoại</label>
+                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control form-control-lg", placeholder = "Nhập số điện thoại", type = "tel" })
+                @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Address -->
+            <div class="mb-4">
+                <label class="form-label fw-bold"><i class="fas fa-map-marker-alt me-2"></i>Địa chỉ</label>
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control form-control-lg", placeholder = "Nhập địa chỉ" })
+            </div>
+
+            <button type="submit" class="btn btn-coffee w-100 fw-bold btn-lg">
+                💾 Lưu thay đổi
+            </button>
+        }
+    </div>
+</div>
+
+<style>
+    .text-coffee {
+        color: #6b4226;
+    }
+
+    .bg-coffee {
+        background-color: #6b4226;
+    }
+
+    .btn-coffee {
+        background-color: #6b4226;
+        color: #fff;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+        .btn-coffee:hover, .btn-outline-coffee:hover {
+            background-color: #4d2c18;
+            border-color: #4d2c18;
+            transform: translateY(-2px);
+        }
+
+    .btn-outline-coffee {
+        color: #6b4226;
+        border: 2px solid #6b4226;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .avatar-preview img, #previewAvatar {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .avatar-preview img:hover, #previewAvatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+</style>
+
+@section scripts {
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('previewAvatar');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+}
