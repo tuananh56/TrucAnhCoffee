@@ -20,12 +20,8 @@
                 <p><strong>Phương thức thanh toán:</strong> @Model.PaymentMethod</p>
                 <p>
                     <strong>Trạng thái:</strong>
-                    <span class="badge
-                        @(Model.Status == "Chờ xác nhận" ? "bg-warning text-dark" :
-                          Model.Status == "Đang giao" ? "bg-primary" :
-                          Model.Status == "Đã giao" ? "bg-success" :
-                          Model.Status == "Giao hàng thất bại" ? "bg-danger" : "bg-info")">
-                        @Model.Status
+                    <span class="badge @GetStatusColor(Model.Status)">
+                        @GetStatusText(Model.Status)
                     </span>
                 </p>
             </div>
@@ -85,3 +81,40 @@
         }
     </style>
 }
+
+@functions {
+    public string GetStatusColor(string status)
+    {
+        switch (status)
+        {
+            case "Chua giao":
+                return "bg-warning text-dark";
+            case "Dang giao":
+                return "bg-primary text-white";
+            case "Da giao":
+                return "bg-success text-white";
+            case "Giao hang that bai":
+                return "bg-danger text-white";
+            default:
+                return "bg-secondary text-white";
+        }
+    }
+
+    public string GetStatusText(string status)
+    {
+        switch (status)
+        {
+            case "Chua giao":
+                return "Chờ xác nhận";
+            case "Dang giao":
+                return "Đang giao";
+            case "Da giao":
+                return "Đã giao";
+            case "Giao hang that bai":
+                return "Giao hàng thất bại";
+            default:
+                return status;
+        }
+    }
+}
+

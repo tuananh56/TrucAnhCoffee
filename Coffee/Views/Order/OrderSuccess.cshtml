@@ -3,22 +3,90 @@
 }
 
 <div class="container text-center mt-5">
-    <i class="fas fa-check-circle text-success" style="font-size: 80px;"></i>
-    <h2 class="mt-3">🎉 Đặt hàng thành công!</h2>
-    <p class="lead">Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đang được xử lý.</p>
-
-    <div class="alert alert-info">
-        <strong>Mã đơn hàng:</strong> <span class="fw-bold">@ViewBag.OrderID</span><br>
-        <strong>Phương thức thanh toán:</strong> <span class="fw-bold">@ViewBag.PaymentMethod</span>
-
+    <!-- Icon thành công -->
+    <div class="success-icon-wrapper mb-4">
+        <i class="fas fa-check-circle text-success success-icon"></i>
     </div>
 
-    <a href="@Url.Action("Index", "Product")" class="btn btn-primary">🏠 Về trang chủ</a>
+    <h2 class="fw-bold text-coffee mb-3">🎉 Đặt hàng thành công!</h2>
+    <p class="lead text-muted mb-4">Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đang được xử lý.</p>
 
-    <a href="@Url.Action("XemDH", "Order", new { id = ViewBag.OrderID })" class="btn btn-warning">
-        📦 Xem đơn hàng
-    </a>
-   
+    <!-- Card thông tin đơn hàng -->
+    <div class="card shadow-sm border-0 rounded-4 mx-auto mb-4 order-info-card" style="max-width: 400px;">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-3">Thông tin đơn hàng</h5>
+            <p class="mb-2"><strong>Mã đơn hàng:</strong> <span class="fw-bold">@ViewBag.OrderID</span></p>
+            <p class="mb-0"><strong>Phương thức thanh toán:</strong> <span class="fw-bold">@ViewBag.PaymentMethod</span></p>
+        </div>
+    </div>
 
-
+    <!-- Nút hành động -->
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="@Url.Action("Index", "Product")" class="btn btn-primary btn-lg action-btn">
+            🏠 Về trang chủ
+        </a>
+        <a href="@Url.Action("XemDH", "Order", new { id = ViewBag.OrderID })" class="btn btn-warning btn-lg action-btn">
+            📦 Xem đơn hàng
+        </a>
+    </div>
 </div>
+
+@section styles {
+    <style>
+        .text-coffee {
+            color: #6b4226;
+        }
+
+        /* Icon check lớn, animation */
+        .success-icon-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            animation: bounceIn 0.8s ease forwards;
+        }
+
+        @@keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        /* Card thông tin */
+        .order-info-card {
+            border: 1px solid #f0e6dc;
+            background-color: #fff8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .order-info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(107,66,38,0.2);
+        }
+
+        /* Nút hành động */
+        .action-btn {
+            border-radius: 12px;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        /* Responsive */
+        @@media (max-width: 576px) {
+            .success-icon { font-size: 60px; }
+            .action-btn { width: 100%; text-align: center; }
+            .order-info-card { width: 100%; }
+        }
+    </style>
+}

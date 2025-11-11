@@ -9,9 +9,14 @@
 
     @if (!Model.Any())
     {
-        <div class="alert alert-warning" role="alert">
-            Giỏ hàng của bạn đang trống! <a href="@Url.Action("Index", "Product")" class="alert-link">Tiếp tục mua sắm</a>.
+        <div class="alert alert-warning alert-empty-cart text-center p-4 rounded-4 shadow-sm" role="alert">
+            <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+            <h5 class="mb-2 fw-bold">Giỏ hàng của bạn đang trống!</h5>
+            <p class="mb-0">
+                <a href="@Url.Action("Index", "Product")" class="btn btn-outline-warning btn-sm mt-2">🛍 Tiếp tục mua sắm</a>
+            </p>
         </div>
+
     }
     else
     {
@@ -144,4 +149,26 @@
             flex-direction: column;
         }
     }
+    .alert-empty-cart {
+        background: #fff8e6; /* màu nền nhẹ nhàng */
+        color: #6b4226; /* màu chữ nâu coffee */
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .alert-empty-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .alert-empty-cart a.btn {
+            border-radius: 20px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+            .alert-empty-cart a.btn:hover {
+                background-color: #6b4226;
+                color: #fff;
+            }
+
 </style>

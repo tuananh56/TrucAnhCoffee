@@ -5,23 +5,25 @@
 }
 
 <div class="container mt-5">
-    <div class="row g-4">
+    <div class="row g-4 align-items-start">
         <!-- Ảnh sản phẩm -->
-        <div class="col-md-5">
-            <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
-                <img src="@Model.ImageURL" class="card-img-top product-img" alt="@Model.Name"
-                     style="width: 100%; height: 400px; object-fit: cover;">
+        <div class="col-lg-5 col-md-6">
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden product-detail-card">
+                <img src="@Model.ImageURL" class="card-img-top product-img" alt="@Model.Name">
+                @* Badge SALE nếu muốn *@
+                @*<span class="badge bg-danger position-absolute top-0 start-0 m-3">SALE</span>*@
             </div>
         </div>
 
         <!-- Thông tin sản phẩm -->
-        <div class="col-md-7 d-flex flex-column">
+        <div class="col-lg-7 col-md-6 d-flex flex-column">
             <h2 class="fw-bold text-coffee">@Model.Name</h2>
-            <p class="text-muted mb-2">Mã sản phẩm: <strong>@Model.ProductID</strong></p>
+            <p class="text-muted mb-1">Mã sản phẩm: <strong>@Model.ProductID</strong></p>
+            <p class="text-muted mb-3">Ngày tạo: @(Model.CreatedAt?.ToString("dd/MM/yyyy") ?? "Không có dữ liệu")</p>
 
-            <h4 class="text-danger fw-bold mt-2">
-                <i class="fas fa-tag me-1"></i> @String.Format("{0:N0} VNĐ", Model.Price)
-            </h4>
+            <h3 class="text-danger fw-bold mb-3 fs-3">
+                @String.Format("{0:N0} VNĐ", Model.Price)
+            </h3>
 
             <!-- Đánh giá -->
             <div class="mb-3">
@@ -29,31 +31,26 @@
                 <span class="text-muted ms-2">(120 đánh giá)</span>
             </div>
 
-            <!-- Mô tả & thông tin -->
-            <p><strong>Mô tả:</strong> @Model.Description</p>
-           
-            <p><strong>Ngày tạo:</strong> @(Model.CreatedAt?.ToString("dd/MM/yyyy") ?? "Không có dữ liệu")</p>
-
-            <!-- Thông báo khi thêm vào giỏ hàng -->
-            <div id="cartMessage" class="alert alert-success d-none mt-3 text-center fs-6" role="alert">
-                ✅ Sản phẩm đã được thêm vào giỏ hàng!
-            </div>
+            <!-- Mô tả -->
+            <p class="mb-4"><strong>Mô tả:</strong> @Model.Description</p>
 
             <!-- Nút hành động -->
-            <div class="d-flex gap-3 mt-4">
+            <div class="d-flex flex-wrap gap-3 mb-3">
                 <button id="btnBuyNow" class="btn btn-coffee btn-lg flex-fill fw-bold">
                     <i class="fas fa-shopping-bag me-1"></i> Mua ngay
                 </button>
-                <button id="btnAddToCart" class="btn btn-outline-coffee btn-lg flex-fill fw-bold">
-                    <i class="fas fa-cart-plus me-1"></i> Thêm vào giỏ
-                </button>
+            </div>
+
+            <!-- Thông báo -->
+            <div id="cartMessage" class="alert alert-success d-none text-center fs-6 rounded-3">
+                ✅ Sản phẩm đã được thêm vào giỏ hàng!
             </div>
         </div>
     </div>
 
     <!-- Nút quay lại -->
     <div class="mt-5 text-center">
-        <a href="@Url.Action("Index")" class="btn btn-secondary">
+        <a href="@Url.Action("Index", "Product")" class="btn btn-secondary btn-lg">
             <i class="fas fa-arrow-left me-1"></i> Quay lại danh sách
         </a>
     </div>
@@ -65,38 +62,84 @@
             color: #6b4226;
         }
 
+        .product-detail-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+            .product-detail-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            }
+
+        .product-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.4s ease, filter 0.4s ease;
+        }
+
+            .product-img:hover {
+                transform: scale(1.05);
+                filter: brightness(1.1);
+                cursor: pointer;
+            }
+
         .btn-coffee {
-            background-color: #6b4226;
+            background: linear-gradient(145deg, #6b4226, #4d2c18);
             color: #fff;
-            border-radius: 10px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(107,66,38,0.4);
             transition: all 0.3s ease;
         }
 
             .btn-coffee:hover {
-                background-color: #4d2c18;
-                transform: translateY(-2px);
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(107,66,38,0.6);
             }
 
         .btn-outline-coffee {
             color: #6b4226;
             border: 2px solid #6b4226;
-            border-radius: 10px;
+            border-radius: 12px;
             transition: all 0.3s ease;
         }
 
             .btn-outline-coffee:hover {
                 background-color: #6b4226;
                 color: #fff;
-                transform: translateY(-2px);
+                transform: translateY(-3px);
             }
 
-        .product-img {
-            transition: transform 0.3s ease-in-out;
+        #cartMessage {
+            background-color: #d4edda;
+            color: #155724;
+            margin-top: 10px;
         }
 
-            .product-img:hover {
-                transform: scale(1.05);
+        @@media (max-width: 768px) {
+            .product-img {
+                height: 300px;
             }
+
+            .btn-coffee, .btn-outline-coffee {
+                font-size: 1rem;
+                padding: 0.6rem 1rem;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .product-img {
+                height: 250px;
+            }
+
+            .btn-coffee, .btn-outline-coffee {
+                font-size: 0.95rem;
+                padding: 0.5rem 0.8rem;
+            }
+        }
     </style>
 }
 
@@ -104,6 +147,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
+            // Thêm vào giỏ hàng
             $("#btnAddToCart").click(function () {
                 $.ajax({
                     url: "@Url.Action("AddToCart", "Cart")",
@@ -124,6 +168,7 @@
                 });
             });
 
+            // Mua ngay
             $("#btnBuyNow").click(function () {
                 $.ajax({
                     url: "@Url.Action("AddToCart", "Cart")",

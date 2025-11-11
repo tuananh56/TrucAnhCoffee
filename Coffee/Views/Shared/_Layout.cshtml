@@ -91,6 +91,8 @@
 
                         <li class="nav-item">@Html.ActionLink("📦 Sản phẩm", "Index", "Product", new { area = "" }, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("☎️ Liên hệ", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("🛒 Giỏ hàng", "Checkout", "Order", new { area = "" }, new { @class = "nav-link" })</li>
+                
                         @if (Session["Role"] != null && Session["Role"].ToString() == "Admin")
                         {
                             <li class="nav-item">@Html.ActionLink("⚙️ Quản trị", "Dashboard", "Admin", new { area = "" }, new { @class = "nav-link" })</li>
@@ -120,7 +122,7 @@
                                         <li>@Html.ActionLink("⚙️ Trang Quản Trị", "Dashboard", "Admin", null, new { @class = "dropdown-item" })</li>
                                         <li>@Html.ActionLink("🛍️ Lịch sử mua hàng", "OrderHistory", "Order", null, new { @class = "dropdown-item" })</li>
                                         <li>@Html.ActionLink("📦 Đơn hàng của tôi", "XemDH", "Order", null, new { @class = "dropdown-item" })</li>
-                                        <li>@Html.ActionLink("🛒 Giỏ hàng", "Checkout", "Order", null, new { @class = "dropdown-item" })</li>
+                                       
                                         <li>@Html.ActionLink("👤 Quản lý người dùng", "Index", "User", null, new { @class = "dropdown-item" })</li>
                                         <li>@Html.ActionLink("📦 Quản lý sản phẩm", "Index", "AdminProduct", null, new { @class = "dropdown-item" })</li>
                                         <li>@Html.ActionLink("📝 Quản lý đơn hàng", "Index", "Order", null, new { @class = "dropdown-item" })</li>

@@ -123,3 +123,14 @@
 11/11/2025 8:34:37 AM: Người dùng 'admin2222' đã đăng nhập.
 11/11/2025 8:38:39 AM: Người dùng 'admin2222' đã đăng nhập.
 11/11/2025 8:46:26 AM: Người dùng 'admin2222' đã đăng nhập.
+11/11/2025 8:51:19 AM: Người dùng đã đăng xuất.
+11/11/2025 8:51:27 AM: Người dùng 'old' đã đăng nhập.
+11/11/2025 9:04:19 AM: Người dùng 'old' đã đăng nhập.
+11/11/2025 9:21:49 AM: Người dùng đã đăng xuất.
+11/11/2025 9:21:54 AM: Người dùng 'admin2222' đã đăng nhập.
+11/11/2025 9:23:05 AM: Người dùng đã đăng xuất.
+11/11/2025 9:23:08 AM: Người dùng 'old' đã đăng nhập.
+11/11/2025 9:24:38 AM: Người dùng đã đăng xuất.
+11/11/2025 9:24:40 AM: Người dùng 'admin2222' đã đăng nhập.
+11/11/2025 9:26:20 AM: Người dùng đã đăng xuất.
+11/11/2025 9:26:23 AM: Người dùng 'old' đã đăng nhập.
