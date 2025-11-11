@@ -52,7 +52,7 @@ namespace Coffee.Models
         public User Login(string username, string password, out string errorMessage)
         {
             errorMessage = null;
-            var user = db.Users.FirstOrDefault(u => u.Username == username);
+           var user = db.Users.FirstOrDefault(u => u.Username == username);
 
             if (user == null)
             {
